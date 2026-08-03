@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -33,9 +35,12 @@ class SessionsController extends Controller
         return redirect()->intended('/')->with('success', 'You are now logged in.');
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
         Auth::logout();
+
+        $request()->session()->invalidate();
+        $request()->session()->regenerateToken();
 
         return redirect('/');
     }

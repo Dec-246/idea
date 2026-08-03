@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
-        Model::shouldBeStrict(); //prevent lazy loading
+        Model::shouldBeStrict(); // prevent lazy loading
         Model::automaticallyEagerLoadRelationships(); // solvesn+1 problem - if we're loading relationship wihtin loop - this will be handled automatically
     }
 }
