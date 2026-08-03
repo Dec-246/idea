@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto h-16 flex items-center justify-between">
     <div>
       <a href="/">
-        <img src="/images/idea-logo.png" alt="" width="100" alt="idea logo">
+        <img src="/images/idea-logo.png" width="100" height="auto" alt="idea logo">
       </a>
     </div>
 
