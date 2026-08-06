@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
-            'email' => ['required', 'string', 'min:3', 'max:255', Rule::unique('users', 'email')], // user has to provide unique email
+            'email' => ['required', 'string', 'email', 'min:3', 'max:255', Rule::unique('users', 'email')], // user has to provide unique email
             'password' => ['required', 'string', 'min:8', 'max:255'],
         ]);
 
