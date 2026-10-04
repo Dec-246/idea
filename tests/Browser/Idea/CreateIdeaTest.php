@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Idea;
 use App\Models\User;
 
 // testing happy path
@@ -12,17 +13,23 @@ it('creates a new idea', function () {
         ->fill('title', 'My first idea')
         ->click('@button-status-completed')
         ->fill('description', 'This is my first idea')
-        ->fill('@new-link', 'https://example.com')
+        ->fill('@new-link', 'https://laracasts.com')
         ->click('@submit-new-link-button')
-        ->fill('@new-link', 'https://example.org')
+        ->fill('@new-link', 'https://laravel.com')
         ->click('@submit-new-link-button')
+        ->fill('@new-step', 'Do a thing')
+        ->click('@submit-new-step-button')
+        ->fill('@new-step', 'Do another thing')
+        ->click('@submit-new-step-button')
         ->click('Create Idea')
         ->assertPathIs('/ideas');
 
-    expect($user->ideas()->first())->toMatchArray([
+    expect($idea = $user->ideas()->first())->toMatchArray([
         'title' => 'My first idea',
         'status' => 'completed',
         'description' => 'This is my first idea',
-        'links' => ['https://example.com', 'https://example.org'],
+        'links' => ['https://laracasts.com', 'https://laravel.com'],
     ]);
+
+    expect($idea->steps)->toHaveCount(2);
 });

@@ -7,9 +7,16 @@
                 Back to ideas
             </a>
 
-        <div class="flex gap-x-3 items-center">
-            <button class="btn btn-outlined">
+        <div class="gap-x-3 flex items-center">
+            <button
+                {{-- to respong to click handlers, need to register as Alpine component --}}
+                x-data
+                class="btn btn-outlined"
+                data-test="edit-idea-button"
+                @click="$dispatch('open-modal', 'edit-idea')"
+            >
                 <x-icons.external />
+
                 Edit Ideas
             </button>
 
@@ -40,9 +47,12 @@
                 <div class="text-muted-foreground text-sm">{{ $idea->created_at->diffForHumans() }}</div>
             </div>
 
-            <x-card class="mt-6">
-                <div class="text-foreground max-w-none cursor-pointer">{{ $idea->description }}</div>
-            </x-card>
+            {{-- only show description card if description exists. this means description doesn't show if has been deleted --}}
+            @if ($idea->description)
+                <x-card class="mt-6">
+                    <div class="text-foreground max-w-none cursor-pointer">{{ $idea->description }}</div>
+                </x-card>
+            @endif
 
             {{-- Steps --}}
             @if ($idea->steps->count())
@@ -84,5 +94,7 @@
                 </div>
             @endif
         </div>
+
+        <x-idea.modal  :idea="$idea" />
     </div>
 </x-layout>

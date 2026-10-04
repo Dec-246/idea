@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\CreateIdea;
-use App\Http\Requests\StoreIdeaRequest;
-use App\Http\Requests\UpdateIdeaRequest;
+use App\Actions\UpdateIdea;
+use App\Http\Requests\IdeaRequest;
 use App\IdeaStatus;
 use App\Models\Idea;
 use Illuminate\Http\Request;
@@ -46,9 +46,9 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreIdeaRequest $request, CreateIdea $action)
+    public function store(IdeaRequest $request, CreateIdea $action)
     {
-        $action->handle($request->validated());
+        $action->handle($request->safe()->all());
 
         return to_route('idea.index')->with('success', 'Idea created successfully.');
     }
@@ -74,9 +74,11 @@ class IdeaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateIdeaRequest $request, Idea $idea): void
+    public function update(IdeaRequest $request, Idea $idea, UpdateIdea $action)
     {
-        //
+        $action->handle($request->safe()->all(), $idea);
+
+        return back()->with('success', 'Idea updated!');
     }
 
     /**
@@ -85,6 +87,7 @@ class IdeaController extends Controller
     public function destroy(Idea $idea)
     {
         // authorize user to delete idea
+
         $idea->delete();
 
         return to_route('idea.index');

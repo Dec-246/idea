@@ -1,4 +1,4 @@
-@props(['label', 'name', 'type' => 'text'])
+@props(['label' => false, 'name', 'type' => 'text', 'value' => ''])
 
 <div class="space-y-2">
     @if ($label)
@@ -15,14 +15,17 @@
             id="{{ $name }}"
             class="textarea"
             {{ $attributes  }}
-        >{{ old($name) }}</textarea>
+
+            {{-- old gets the  old value from previous form submission.
+             if no previous form submission, default to empty string--}}
+        >{{ old($name, $value) }}</textarea>
     @else
         <input
             type="{{ $type }}"
             id="{{ $name }}"
             name="{{ $name }}"
             class="input"
-            value="{{ old($name) }}"
+            value="{{ old($name, $value) }}"
             {{ $attributes  }}>
     @endif
 
